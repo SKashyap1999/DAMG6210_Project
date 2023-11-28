@@ -69,3 +69,25 @@ SELECT @total_review=COUNT(*) FROM t;
 DROP TABLE t;
 END;
 
+DECLARE 
+    @user_id INTEGER,
+    @avg_rating DECIMAL(10,2),
+    @pos_review INTEGER,
+    @neg_review INTEGER,
+    @neu_review INTEGER,
+    @total_review INTEGER;
+ 
+SET @user_id = 117;
+EXEC GetSellerStats 
+    @user_id = @user_id,
+    @avg_rating = @avg_rating OUTPUT,
+    @pos_review = @pos_review OUTPUT,
+    @neg_review = @neg_review OUTPUT,
+    @neu_review = @neu_review OUTPUT,
+    @total_review = @total_review OUTPUT;
+ 
+PRINT 'Average Rating: ' + CONVERT(VARCHAR(10), @avg_rating);
+PRINT 'Positive Reviews: ' + CONVERT(VARCHAR(10), @pos_review);
+PRINT 'Negative Reviews: ' + CONVERT(VARCHAR(10), @neg_review);
+PRINT 'Neutral Reviews: ' + CONVERT(VARCHAR(10), @neu_review);
+PRINT 'Total Reviews: ' + CONVERT(VARCHAR(10), @total_review);
