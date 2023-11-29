@@ -1,1 +1,2 @@
-
+Run the python file with below commandline. 
+streamlit run .\app.py
