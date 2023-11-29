@@ -2,17 +2,14 @@
 CREATE DATABASE marketplace;
 use marketplace;
 
-
-
-
 /* Create Tables */ /*Added Zip code */
 CREATE TABLE STUDENT
 (
 Student_ID        INTEGER      NOT NULL,
 First_Name        VARCHAR(100) CHECK (First_Name NOT LIKE '%[^a-zA-Z ]%') NOT NULL,
 Last_Name        VARCHAR(100) CHECK (Last_Name NOT LIKE '%[^a-zA-Z ]%') NOT NULL,
-Email            VARCHAR(100) CHECK( Email LIKE '%@%') ,
-Phone            VARCHAR(20)  CHECK(ISNUMERIC(Phone) = 1 AND LEN(Phone) >= 10),
+Email            VARCHAR(100) ,
+Phone            VARCHAR(20)  ,
 Date_of_Birth    DATE           NOT NULL,
 Address          VARCHAR(200)      NOT NULL,
 Zip_Code         INTEGER       CHECK(LEN(Zip_Code) = 5) ,
@@ -131,7 +128,7 @@ CREATE TABLE [TRANSACTION]
   Listing_ID            VARCHAR(100)                NOT NULL,
   Transaction_Mode      VARCHAR(100)     CHECK (Transaction_Mode IN('DEBIT','CREDIT')) NOT NULL,
   User_ID               INTEGER               NOT NULL,
-  Supervisor_ID         INTEGER               NOT NULL,
+  Supervisor_ID         INTEGER               NULL,
   CONSTRAINT Transaction_PK PRIMARY KEY (Transaction_ID),
   CONSTRAINT Transaction_FK1 FOREIGN KEY (User_ID) REFERENCES [USER](User_ID),
   CONSTRAINT Transaction_FK2 FOREIGN KEY (Listing_ID) REFERENCES LISTING(Listing_ID),
@@ -747,9 +744,4 @@ VALUES
 
 
 select * from MEETUP;
-
-
-
-
-
 
