@@ -1,1 +1,23 @@
+/* Non-clustered Indexes*/
 
+GO
+CREATE NONCLUSTERED INDEX IDX_SavedItem_Date
+ON SAVED_ITEM(Saved_Date);
+
+
+GO
+CREATE NONCLUSTERED INDEX IDX_Report_Status
+ON REPORT(Report_Status);
+
+GO
+CREATE NONCLUSTERED INDEX IDX_Transaction_Date
+ON [TRANSACTION](Transaction_Date);
+
+
+GO
+CREATE NONCLUSTERED INDEX IDX_Listing_Date
+ON [TRANSACTION](Transaction_Date);
+
+GO
+CREATE NONCLUSTERED INDEX IX_Student_Multi
+ON STUDENT (Last_Name,First_Name);
