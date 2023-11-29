@@ -395,6 +395,8 @@ SELECT * FROM CATEGORY;
   -- Insert data into the ITEM table
 INSERT INTO ITEM (Item_ID, Seller_User_ID, Item_Name, Item_Desc, Item_Category, Item_Price, Item_Cond, Mfg_Date)
 VALUES
+INSERT INTO ITEM (Item_ID, Seller_User_ID, Item_Name, Item_Desc, Item_Category, Item_Price, Item_Cond, Mfg_Date)
+VALUES
   ('A01', 101, 'Smartphone X', 'High-end smartphone with advanced features', 3, 800, 'New', '2022-01-15'),
   ('B02', 102, 'Designer Jeans', 'Premium denim jeans with a stylish design', 19, 45, 'Like-New', '2022-02-20'),
   ('C03', 103, 'Gaming Laptop Pro', 'Powerful gaming laptop for immersive gaming experience', 4, 1500, 'Refurbished', '2022-03-10'),
@@ -419,7 +421,26 @@ VALUES
   ('E22', 106, 'Portable Chargers Set', 'Convenient set of portable chargers for various devices', 50, 40, 'Acceptable', '2023-10-23'),
   ('F23', 109, 'Wireless Gaming Consoles', 'Gaming consoles with wireless controllers for a seamless experience', 37, 350, 'New', '2023-11-30'),
   ('G24', 110, 'Formal Wallet Collection', 'Classy collection of formal wallets for men', 39, 30, 'Like-New', '2023-12-10'),
-  ('H25', 111, 'Smartphone Accessories Kit', 'Essential accessories for enhancing the functionality of your smartphone', 10, 15, 'Refurbished', '2024-01-18');
+  ('H25', 111, 'Smartphone Accessories Kit', 'Essential accessories for enhancing the functionality of your smartphone', 10, 15, 'Refurbished', '2024-01-18'),
+ ('I26', 114, 'High Resolution Camera', 'Professional camera for high-quality photography', 21, 900, 'New', '2024-02-10'),
+ ('J27', 115, 'Wireless Earbuds', 'Compact and stylish wireless earbuds for on-the-go use', 8, 50, 'Like-New', '2024-03-15'),
+ ('K28', 116, 'Running Shorts', 'Comfortable shorts designed for running and workouts', 33, 20, 'Refurbished', '2024-04-20'),
+ ('L29', 117, 'Home Espresso Machine', 'Premium espresso machine for coffee enthusiasts', 34, 250, 'Good', '2024-05-25'),
+ ('M30', 101, 'Smart Thermostat', 'Intelligent thermostat for efficient home climate control', 46, 80, 'Acceptable', '2024-06-01'),
+ ('N31', 102, 'Travel Neck Pillow', 'Compact and supportive neck pillow for travel comfort', 47, 15, 'New', '2024-07-08'),
+ ('O32', 103, 'Wireless Mouse', 'Ergonomic wireless mouse for efficient computer navigation', 27, 35, 'Like-New', '2024-08-15'),
+ ('P33', 104, 'Running Sneakers', 'High-performance sneakers for running and athletic activities', 28, 70, 'Refurbished', '2024-09-22'),
+ ('Q34', 105, 'Gaming Headset', 'Immersive gaming headset for an enhanced gaming experience', 16, 100, 'Good', '2024-10-30'),
+ ('R35', 106, 'Leather Jacket', 'Classic leather jacket for a stylish and timeless look', 25, 120, 'Like-New', '2024-11-05'),
+ ('S37', 108, 'Smartphone Camera Lens Kit', 'Enhance smartphone photography with this lens kit', 10, 40, 'Refurbished', '2024-11-20'),
+ ('T38', 109, 'Ultra Thin Laptop', 'Lightweight and powerful laptop for on-the-go use', 4, 1100, 'New', '2024-10-30'),
+ ('U39', 110, 'Fashionable Backpack', 'Trendy backpack for everyday use with a unique design', 18, 55, 'Acceptable', '2024-09-15'),
+ ('V40', 111, 'Gaming Mouse', 'High-precision gaming mouse for enhanced gaming performance', 27, 30, 'New', '2024-08-25'),
+ ('W41', 112, 'Running Jacket', 'Weather-resistant jacket for running and outdoor activities', 25, 45, 'Like-New', '2024-07-05'),
+ ('X42', 113, 'Hiking Boots', 'Durable and comfortable boots for hiking adventures', 29, 90, 'Refurbished', '2024-06-15'),
+ ('Y43', 114, 'Compact Digital Camera', 'Portable digital camera for capturing moments on the go', 21, 250, 'Good', '2024-05-25'),
+ ('Z44', 115, 'Wireless Charging Pad', 'Convenient wireless charging pad for compatible devices', 10, 20, 'Acceptable', '2024-04-05'),
+ ('AA45', 116, 'Stylish Sunglasses', 'Fashionable sunglasses with UV protection for a trendy look', 49, 35, 'New', '2024-03-15');
 
 select * from ITEM;
 
