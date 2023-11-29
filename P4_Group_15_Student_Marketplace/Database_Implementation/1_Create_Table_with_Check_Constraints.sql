@@ -1,8 +1,9 @@
-/* Create Table */
+/* Create DATABASE */
 CREATE DATABASE marketplace;
 use marketplace;
 
-/* Create Tables */ /*Added Zip code */
+/* Create Tables */ 
+/*Student*/
 CREATE TABLE STUDENT
 (
 Student_ID        INTEGER      NOT NULL,
@@ -17,7 +18,7 @@ Zip_Code         INTEGER       CHECK(LEN(Zip_Code) = 5) ,
 CONSTRAINT Student_PK PRIMARY KEY (Student_ID),
 );
 
-
+/*Account*/
 CREATE TABLE ACCOUNT
 (
 Account_ID     INTEGER    NOT NULL,
@@ -31,7 +32,7 @@ CONSTRAINT Account_PK PRIMARY KEY (Account_ID),
 CONSTRAINT Account_FK FOREIGN KEY (Student_ID) REFERENCES STUDENT(Student_ID)
 );
 
-
+/*Admin*/
 CREATE TABLE [ADMIN] 
 (
 Account_ID  INTEGER   NOT NULL,
@@ -42,26 +43,27 @@ CONSTRAINT Admin_PK PRIMARY KEY (Admin_ID),
 CONSTRAINT Admin_FK FOREIGN KEY (Account_ID) REFERENCES ACCOUNT(Account_ID)
 );
 
-
+/*User*/
 CREATE TABLE [USER]
-  (
+(
    Account_ID INTEGER       NOT NULL,
    User_ID     INTEGER      NOT NULL,
    Payment_Info VARCHAR(100)      NOT NULL,
    Shipping_Address VARCHAR(200),
    CONSTRAINT User_PK PRIMARY KEY (User_ID),
    CONSTRAINT User_FK FOREIGN KEY (Account_ID) REFERENCES ACCOUNT(Account_ID)
-   );
+);
 
+/*Category*/
 CREATE TABLE CATEGORY
 ( Category_ID            INTEGER          NOT NULL,
   Category_Name          VARCHAR(100)     NOT NULL,
   Parent_Category_ID     VARCHAR(100)             ,
   Created_Date           DATE                     ,
   CONSTRAINT Category_PK PRIMARY KEY (Category_ID)
-  );
+);
 
-
+/*Item*/
 CREATE TABLE ITEM
 
 ( Item_ID               VARCHAR(100)               NOT NULL,
@@ -79,7 +81,8 @@ CREATE TABLE ITEM
   CONSTRAINT Item_FK2 FOREIGN KEY (Item_Category) REFERENCES CATEGORY(Category_ID)
 );
 
--- 26th November added
+---------------------------------------------------------------------------------------------------------------
+---Added Selling Price Column in ITEM Table for computed column requirement to calculate discount on each item
 
 ALTER TABLE ITEM ADD Selling_Price INTEGER;
 SELECT * from ITEM;
@@ -99,14 +102,15 @@ SET Selling_Price =
     ELSE 1  
   END;
 
----------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------------
+/*SUPERVISOR*/
 CREATE TABLE SUPERVISOR
 (Supervisor_ID           INTEGER               NOT NULL,
 Supervisor_Name          VARCHAR(100),
 Date_of_Employment         DATE,
 CONSTRAINT Supervisor_PK PRIMARY KEY (Supervisor_ID));
 
+/*LISTING*/
 CREATE TABLE LISTING
 (
 Listing_ID               VARCHAR(100)   NOT NULL,
@@ -120,8 +124,7 @@ CONSTRAINT Listing_PK PRIMARY KEY(Listing_ID),
 CONSTRAINT Listing_FK FOREIGN KEY (Listing_ID) REFERENCES ITEM(Item_ID)
 );
 
-
-
+/*TRANSACTION*/
 CREATE TABLE [TRANSACTION]
 ( Transaction_ID        INTEGER               NOT NULL,
   Transaction_Date      DATE                   NOT NULL,
@@ -135,19 +138,7 @@ CREATE TABLE [TRANSACTION]
   CONSTRAINT Transaction_FK3 FOREIGN KEY (Supervisor_ID) REFERENCES SUPERVISOR(Supervisor_ID)
  );
 
-/*CREATE TABLE SAVED_ITEM
-(
-Saved_Item_ID  INTEGER      NOT NULL,
-Student_ID     INTEGER      NOT NULL,
-Item_ID        VARCHAR(100)      NOT NULL,
-Is_Favourite    VARCHAR(1)          ,
-Saved_Date      DATE        NOT NULL,
-
-CONSTRAINT Saved_Item_PK PRIMARY KEY (Saved_Item_ID),
-CONSTRAINT Saved_Item_FK1 FOREIGN KEY (Student_ID) REFERENCES STUDENT(Student_ID),
-CONSTRAINT Saved_Item_FK2 FOREIGN KEY (Item_ID) REFERENCES ITEM(Item_ID)
-);*/
-
+/*SAVED_ITEM*/
 CREATE TABLE SAVED_ITEM
 (
     Saved_Item_ID  INTEGER IDENTITY(1,1) NOT NULL,
@@ -161,21 +152,7 @@ CREATE TABLE SAVED_ITEM
     CONSTRAINT Saved_Item_FK2 FOREIGN KEY (Item_ID) REFERENCES ITEM(Item_ID)
 );
 
-/*CREATE TABLE [MESSAGE]
-(
-Message_ID         INTEGER    NOT NULL,
-Sender_Student_ID  INTEGER    NOT NULL,
-Receiver_Student_ID INTEGER   NOT NULL,
-Listing_ID          VARCHAR(100)  NOT NULL,
-Content            VARCHAR(300) NOT NULL,
-Date_Received       DATETIME    NOT NULL,
-CONSTRAINT Message_PK PRIMARY KEY (Message_ID),
-CONSTRAINT Message_FK1 FOREIGN KEY (Sender_Student_ID) REFERENCES STUDENT(Student_ID),
-CONSTRAINT Message_FK2 FOREIGN KEY (Receiver_Student_ID) REFERENCES STUDENT(Student_ID),
-CONSTRAINT Message_FK3 FOREIGN KEY (Listing_ID) REFERENCES LISTING(Listing_ID)
-);
-*/
-
+/*MESSAGE*/
 CREATE TABLE [MESSAGE]
 (
     Message_ID         INTEGER IDENTITY(1,1) NOT NULL,
@@ -191,6 +168,7 @@ CREATE TABLE [MESSAGE]
     CONSTRAINT Message_FK3 FOREIGN KEY (Listing_ID) REFERENCES LISTING(Listing_ID)
 );
 
+/*REVIEW*/
 CREATE TABLE REVIEW
 (
 Review_ID    INTEGER    NOT NULL,
@@ -205,6 +183,7 @@ CONSTRAINT  Review_FK FOREIGN KEY (Listing_ID) REFERENCES LISTING (Listing_ID),
 CONSTRAINT  Review_FK2 FOREIGN KEY (Student_ID) REFERENCES STUDENT (Student_ID)
 );
 
+/*REPORT*/
 CREATE TABLE REPORT
 (
 Report_ID  INTEGER  NOT NULL,
@@ -219,28 +198,17 @@ CONSTRAINT Report_FK1 FOREIGN KEY (Reporter_Student_ID) REFERENCES STUDENT(Stude
 CONSTRAINT Report_FK2 FOREIGN KEY (Admin_ID) REFERENCES [ADMIN](Admin_ID)
 );
 
+/*REVIEW_REPORT*/
 CREATE TABLE REVIEW_REPORT
 (
 Review_Report_ID INTEGER NOT NULL,
 Report_ID INTEGER  NOT NULL,
+Reported_Review_ID INTEGER,
 CONSTRAINT Review_Report_PK PRIMARY KEY (Review_Report_ID),
-CONSTRAINT Review_Report_FK FOREIGN KEY (Report_ID) REFERENCES REPORT(Report_ID)
-);
-select * from REVIEW_REPORT; -- reported review id 
-select * from REPORT WHERE  Report_Type = 'R';
-select * from REVIEW;
+CONSTRAINT Review_Report_FK FOREIGN KEY (Report_ID) REFERENCES REPORT(Report_ID),
+CONSTRAINT Review_Report_FK1 FOREIGN KEY (Reported_Review_ID) REFERENCES REVIEW(Review_ID));
 
------26th November Changes 
-
--- Add Review_ID column to REVIEW_REPORT table
-ALTER TABLE REVIEW_REPORT
-ADD Reported_Review_ID INTEGER ;
-
--- Add foreign key constraint
-ALTER TABLE REVIEW_REPORT
-ADD CONSTRAINT Review_Report_FK1 FOREIGN KEY (Reported_Review_ID) REFERENCES REVIEW(Review_ID);
-
---------------------------------------------------------------------------------------
+/*MESSAGE_REPORT*/
 CREATE TABLE MESSAGE_REPORT
 (
 Message_Report_ID INTEGER NOT NULL,
@@ -251,6 +219,7 @@ CONSTRAINT Message_Report_FK FOREIGN KEY (Report_ID) REFERENCES REPORT(Report_ID
 CONSTRAINT Message_Report_FK2 FOREIGN KEY (Message_ID) REFERENCES [MESSAGE](Message_ID)
 );
 
+/*LISTING_REPORT*/
 CREATE TABLE LISTING_REPORT
 (
 Listing_Report_ID INTEGER NOT NULL,
@@ -261,6 +230,7 @@ CONSTRAINT Listing_Report_FK1 FOREIGN KEY (Report_ID) REFERENCES REPORT(Report_I
 CONSTRAINT Listing_Report_FK2 FOREIGN KEY (Reported_Listing_ID) REFERENCES LISTING(Listing_ID)
 );
 
+/*MEETUP*/
 CREATE TABLE MEETUP
 (
 Meeting_ID   INTEGER   NOT NULL,
@@ -303,6 +273,7 @@ VALUES
 
 select * from STUDENT;
 
+-- Insert data into the ACCOUNT table
 INSERT INTO ACCOUNT (Account_ID, Username, Student_ID, Last_Login, Account_Status, Account_Type, Date_Of_Creation)
 VALUES
   (1001, 'user1', 1, '2023-01-01 08:00:00', 'Active', 'S', '2022-01-01'),
@@ -328,6 +299,7 @@ VALUES
 
   select * from ACCOUNT;
 
+-- Insert data into the ADMIN table
   INSERT INTO [ADMIN] (Account_ID, Admin_ID, Permissions, Date_Registered) VALUES
   (1003, 501, 'Limited Access', '2022-03-01'),
   (1006, 502, 'Limited Access', '2022-06-01'),
@@ -362,6 +334,7 @@ VALUES
   (1020, 117, 'PayPal: user17@example.com', '544 Elm St');
 
 select * FROM [USER];
+
 
 -- Insert data into the CATEGORY table
 INSERT INTO CATEGORY (Category_ID, Category_Name, Parent_Category_ID, Created_Date)
@@ -417,6 +390,7 @@ VALUES
   (49, 'Smart Glasses', 7, '2026-01-01'),
   (50, 'Portable Chargers', 10, '2026-02-01');
 
+SELECT * FROM CATEGORY;
 
   -- Insert data into the ITEM table
 INSERT INTO ITEM (Item_ID, Seller_User_ID, Item_Name, Item_Desc, Item_Category, Item_Price, Item_Cond, Mfg_Date)
@@ -449,6 +423,7 @@ VALUES
 
 select * from ITEM;
 
+-- Insert data into the SUPERVISOR table
 INSERT INTO SUPERVISOR (Supervisor_ID, Supervisor_Name, Date_of_Employment)
 VALUES
   (1, 'John Smith', '2022-01-15'),
@@ -464,6 +439,7 @@ VALUES
 
   select * from SUPERVISOR;
 
+-- Insert data into the LISTING table
 INSERT INTO LISTING (Listing_ID, Listing_Seller_ID, Date_Posted, Location, IsLive, Title)
 VALUES
   ('A01', 101, '2022-01-20', 'Boston', 'TRUE', 'Smartphone X Listing'),
@@ -492,9 +468,9 @@ VALUES
   ('G24', 110, '2023-12-15', 'Lowell', 'TRUE', 'Formal Wallet Collection Listing'),
   ('H25', 111, '2024-01-25', 'Lowell', 'TRUE', 'Smartphone Accessories Kit Listing');
 
-
 select * FROM LISTING;
 
+-- Insert data into the TRANSACTION table
 INSERT INTO [TRANSACTION] (Transaction_ID, Transaction_Date, Listing_ID, Transaction_Mode, User_ID, Supervisor_ID)
 VALUES
   (1, '2022-01-25', 'A01', 'CREDIT', 101, 1),
@@ -525,6 +501,7 @@ VALUES
 
 select * from [TRANSACTION];
 
+-- Insert data into the SAVED_ITEM table
 INSERT INTO SAVED_ITEM (Student_ID, Item_ID, Is_Favourite, Saved_Date)
 VALUES
   (1, 'A01', 'Y', '2022-01-20'),
@@ -555,15 +532,14 @@ VALUES
 
   select * from SAVED_ITEM ;
 
--- Sample data for the MESSAGE table
--- Sample data for the MESSAGE table
+-- Insert data for the MESSAGE table
 INSERT INTO MESSAGE (Sender_Student_ID, Receiver_Student_ID, Listing_ID, Content, Date_Received)
 VALUES
   (1, 2, 'A01', 'Hi Jane, I''m interested in buying your Smartphone X.', '2022-01-21 08:30:00'),
-  (2, 1, 'B02', 'Hello John, thanks for your interest! The Designer Jeans are still available.', '2022-02-26 10:45:00'),
-  (3, 4, 'C03', 'Hi Emily, I saw your Gaming Laptop Pro listing. Can you provide more details?', '2022-03-16 15:20:00'),
+  (2, 1, 'B02', 'Hello John, can I have your Number & House Address ?', '2022-02-26 10:45:00'),
+  (3, 4, 'C03', 'Hi Emily, I saw your Gaming Laptop Pro listing. Can you provide more details about you?', '2022-03-16 15:20:00'),
   (4, 3, 'D04', 'Hello Bob, I''m interested in the Wireless Headphones. Are they still available?', '2022-04-11 12:10:00'),
-  (5, 6, 'E05', 'Hi Grace, I love the Men Running Shoes you listed. When can I pick them up?', '2022-05-18 09:05:00'),
+  (5, 6, 'E05', 'Hi Grace, I love the Men Running Shoes you listed. When can I pick you up?', '2022-05-18 09:05:00'),
   (6, 5, 'F06', 'Hello Alex, the Designer Dress is gorgeous! Is it available for immediate purchase?', '2022-06-24 14:30:00'),
   (7, 8, 'G07', 'Hi Olivia, I''m interested in the Smartwatch Elite. Does it come with all accessories?', '2022-07-28 11:15:00'),
   (8, 7, 'H08', 'Hello Michael, I''m looking for a durable Office Backpack. Is yours still for sale?', '2022-08-06 13:45:00'),
@@ -587,6 +563,7 @@ VALUES
 
 select * from MESSAGE;
 
+-- Insert data into the REVIEW table
 INSERT INTO REVIEW (Review_ID, Listing_ID, Student_ID, Rating, Comment, Helpful_Count, Reported_Count)
 VALUES
   (1, 'A01', 1, 8, 'Excellent smartphone! Working perfectly.', 10, 2),
@@ -614,11 +591,9 @@ VALUES
   (23, 'F23', 9, 9, 'Wireless gaming consoles are fantastic. Working perfectly.', 20, 1),
   (24, 'G24', 10, 8, 'Formal wallets are stylish. Good quality material.', 9, 0),
   (25, 'H25', 11, 7, 'Not satisfied with the smartphone accessories kit. Some items not working.', 6, 0);
-
-
 select * from REVIEW;
 
-
+-- Insert data into the REPORT table
 INSERT INTO REPORT (Report_ID, Reporter_Student_ID, Admin_ID, Report_Description, Report_Type, Report_Date, Report_Status)
 VALUES  
   (1, 1, NULL, 'Inappropriate behavior by another student.', 'M', '2022-01-20', 'Pending'),
@@ -650,23 +625,10 @@ VALUES
   (27, 2, NULL, 'Reporting a message. Harassment issue.', 'M', '2024-03-15', 'Pending'),
   (28, 3, NULL, 'Report about a listing. Violation of policies.', 'L', '2024-04-20', 'Pending');
 
-
 select * from REPORT;
 
-INSERT INTO REVIEW_REPORT (Review_Report_ID,Report_ID)
-VALUES
-  (1,2),
-  (2,4),
-  (3,6),
-  (4,7),
-  (5,13),
-  (6,16),
-  (7,2),
-  (8,6),
-  (9,11),
-  (10,1);
 
-
+-- Insert data into the REVIEW_REPORT table
 INSERT INTO REVIEW_REPORT (Review_Report_ID, Report_ID, Reported_Review_ID)
 VALUES
   (1, 2, 1),
@@ -680,8 +642,9 @@ VALUES
   (9, 11, 9),
   (10, 1, 10);
 
-  select * from REVIEW_REPORT;
+select * from REVIEW_REPORT;
 
+-- Insert data into the MESSAGE_REPORT table
 INSERT INTO MESSAGE_REPORT (Message_Report_ID,Report_ID,Message_ID)
 VALUES
   (1,1,2),
@@ -711,9 +674,9 @@ VALUES
   (9, 11, 'K11'),  -- Listing K11 reported in Report 11
   (10, 1, 'A01');  -- Listing A01 reported in Report 1
 
+select * from LISTING_REPORT;
 
-  select * from LISTING_REPORT;
-
+-- Insert data into the MEETUP table
 INSERT INTO MEETUP (Meeting_ID, Buyer_ID, Seller_ID, Description, Date_Time, Location, Type)
 VALUES
   (1, 101, 102, 'Discussing product details', '2022-01-20 15:00:00', 'Coffee Shop A', 'Business'),
@@ -742,6 +705,4 @@ VALUES
   (24, 113, 114, 'Discussing custom order', '2023-12-15 13:00:00', 'Restaurant H', 'Business'),
   (25, 115, 116, 'Meeting for product demonstration', '2024-01-25 15:30:00', 'Coffee Shop A', 'Business');
 
-
 select * from MEETUP;
-
